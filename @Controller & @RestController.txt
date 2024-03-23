@@ -1,0 +1,445 @@
+Java
+string,stringbuffer,stringbuilder
+
+DIFFERENCES BETWEEN STRING AND STRINGBUFFER CLASS
+String
+
+The String class is immutable.
+String is slow and consumes more memory when we concatenate too many strings because every time it creates a new instance.
+String class overrides the equals() method of the Object class. So you can compare the contents of two strings by the equals() method.
+String class is slower while performing concatenation operations.
+String class uses String constant pool.
+StringBuffer
+
+StringBuffer is fast andStringBuffer uses Heap memory.
+ consumes less memory when we concatenate two strings.
+StringBuffer class doesn’t override the equals() method of the Object class.
+StringBuffer class is faster while performing concatenation operations.
+The StringBuffer class is mutable.
+DIFFERENCES BETWEEN STRINGBUILDER AND STRINGBUFFER CLASS
+StringBuffer
+
+StringBuffer is synchronized i.e. thread-safe. It means two threads can’t call the methods of StringBuffer simultaneously.
+StringBuffer is less efficient than StringBuilder.
+StringBuffer was introduced in Java 1.0
+StringBuilder
+
+StringBuilder is non-synchronized i.e., not thread-safe. It means two threads can call the methods of StringBuilder simultaneously.
+StringBuilder is more efficient than StringBuffer.
+StringBuilder was introduced in Java 1.5
+diff :
+	hashmap vs concurrentHashMap
+	hashmap vs treemap
+	hashmap vs hashtable
+	Arraylist vs linkedlist
+	anonymous class vs lamdas
+	predicate vs function
+	Let's compare each pair:
+
+1. **HashMap vs ConcurrentHashMap:**
+   - **HashMap:** Not thread-safe. Suitable for single-threaded environments.
+   - **ConcurrentHashMap:** Thread-safe implementation.
+        Allows concurrent access by multiple threads without the need for external synchronization.
+        Provides better performance in concurrent environments.
+		
+		HashMap: Imagine you have a bucket (HashMap) filled with snacks (key-value pairs). When multiple people (threads) try to grab snacks from the same bucket at the same time, chaos can ensue.
+		If one person is putting snacks in the bucket while another is trying to take them out, they might collide or end up with incorrect snacks. This is because HashMap is not designed to
+		handle simultaneous access from multiple threads. It's like trying to use a single snack bowl at a crowded party – it gets messy!
+
+		ConcurrentHashMap: Now, picture a special snack distribution system (ConcurrentHashMap) designed for a busy party. 
+		It's like having multiple snack bowls, each with its own dedicated line of people waiting to grab snacks. 
+		This system ensures that everyone gets their snacks without collisions or mix-ups. 
+		ConcurrentHashMap is built to handle simultaneous access from multiple threads gracefully, 
+		organizing access to the data in a way that minimizes conflicts and ensures thread safety. 
+		It's like having a well-organized snack station at a large event – efficient and chaos-free!			
+
+2. **HashMap vs TreeMap:**
+   - **HashMap:** Unordered collection. Uses hashing to store key-value pairs, 
+								resulting in \( O(1) \) average time complexity for insertion, deletion, and retrieval operations.
+   - **TreeMap:** Ordered collection. Implemented as a Red-Black tree. Maintains elements in sorted order based on their keys. 
+							Offers \( O(\log n) \) time complexity for insertion, deletion, and retrieval operations but provides sorted iteration.
+
+3. **HashMap vs Hashtable:**
+   - **HashMap:** Not synchronized, allowing better performance in single-threaded environments. Allows null values and one null key.
+   - **Hashtable:** Synchronized, making it thread-safe but less efficient in multi-threaded scenarios due to potential contention. Does not allow null keys or values.
+
+4. **ArrayList vs LinkedList:**
+   - **ArrayList:** Implements a dynamic array. Offers fast random access but slower insertion and deletion operations in the middle of the list.
+   - **LinkedList:** Implements a doubly linked list. Provides fast insertion and deletion at any position but slower random access.
+
+5. **Anonymous class vs Lambdas:**
+   - **Anonymous class:** Traditional way to implement interfaces or extend classes without explicitly defining a named class. 
+											Can be verbose and less readable.
+   - **Lambdas:** Introduced in Java 8. Provide a concise way to represent anonymous functions. 
+							Enhance readability and reduce boilerplate code.
+
+6. **Predicate vs Function:**
+   - **Predicate:** Represents a boolean-valued function of one argument. 
+							Typically used for filtering elements based on a condition.
+   - **Function:** Represents a function that accepts one argument and produces a result. 
+							Used for transforming input into output.
+
+	
+internal working of hashmap,hashset and concurrenthashMap 
+		concurrenthashMap -> how locking takes place
+		The internal working of HashMap, 
+		HashSet, and 
+		ConcurrentHashMap in 
+		Java involves data structures and algorithms optimized 
+		for efficient storage and retrieval of key-value pairs (in the case of HashMap and ConcurrentHashMap) 
+		or unique elements (in the case of HashSet). Here's a brief overview of how each works internally:
+
+1. **HashMap:**
+   - **Data Structure:** HashMap internally uses an array of linked lists (buckets) and a hash function to map keys to indices in this array.
+   - **Hashing:** When a key-value pair is inserted into the HashMap, its hash code is computed using the key's `hashCode()` method. This hash code is then transformed into an index within the array using a hash function (usually involving bit manipulation).
+   - **Collision Handling:** If two keys hash to the same index (collision), HashMap uses a linked list to store multiple entries at that index. In Java 8 and later versions, if a bucket exceeds a certain threshold, it switches from using a linked list to a balanced tree (Red-Black tree) for better performance.
+   - **Retrieval:** To retrieve a value associated with a key, the hash code of the key is computed again, and the corresponding bucket in the array is accessed. If necessary, the linked list or tree in the bucket is traversed to find the matching key-value pair.
+   - **Performance:** HashMap provides \( O(1) \) average-case time complexity for insertion, deletion, and retrieval operations, assuming a good hash function and evenly distributed keys.
+
+2. **HashSet:**
+   - **Data Structure:** HashSet internally uses a HashMap where elements are stored as keys, and the corresponding values are typically `null`.
+   - **Hashing:** When an element is added to the HashSet, its hash code is computed, and the element is inserted into the underlying HashMap with itself as the key and `null` as the value.
+   - **Unique Elements:** HashSet ensures that it contains only unique elements by leveraging the unique key property of HashMap. Duplicate elements are automatically eliminated because HashMap does not allow duplicate keys.
+   - **Performance:** Similar to HashMap, HashSet provides \( O(1) \) average-case time complexity for insertion, deletion, and membership check operations.
+
+3. **ConcurrentHashMap:**
+   - **Data Structure:** ConcurrentHashMap internally uses a combination of hash table and linked list (similar to HashMap) but with additional concurrency control mechanisms.
+   - **Concurrency:** ConcurrentHashMap is designed to support concurrent access by multiple threads without external synchronization. It achieves this through the use of multiple segments (sub-tables), where each segment acts as an independent hash table with its own lock.
+   - **Segmentation:** The ConcurrentHashMap divides the underlying data structure into multiple segments (usually 16 by default). Each segment is independently locked, reducing contention and allowing multiple threads to access different segments simultaneously.
+   - **Performance:** ConcurrentHashMap provides high concurrency for read and write operations, with \( O(1) \) time complexity for most operations under normal concurrency conditions.
+
+Thread 
+	can you start same thread 2 times
+	
+1. **Starting the same thread multiple times:**
+   - No, you cannot start the same thread multiple times.
+   Once a thread has been started and executed, 
+   it cannot be restarted. 
+   You would need to create a new instance of the thread class 
+   if you want to execute the same logic again.
+
+2. **Setting a running thread to daemon:**
+   - Yes, you can set a running thread to daemon using the `
+   setDaemon(true)` method before starting the thread. 
+   A daemon thread runs in the background and does not prevent the JVM from 
+   exiting if all non-daemon threads have finished execution.
+
+3. **How thread pools work:**
+   - Thread pools manage a pool of worker threads 
+   for executing submitted tasks. 
+   Instead of creating a new thread for each task, 
+   thread pools reuse existing threads,
+   which reduces the overhead of thread creation.
+   Tasks are submitted to the pool, and the pool assigns them to available threads for execution.
+
+4. **Thread life-cycle:**
+   - The thread life-cycle consists of several states:
+     - **New:** When a thread is created but not yet started.
+     - **Runnable:** When a thread is ready to run and waiting for CPU time.
+     - **Running:** When a thread is executing its task.
+     - **Blocked:** When a thread is waiting for a monitor lock to enter a synchronized block or method.
+     - **Waiting:** When a thread is waiting indefinitely for another thread to perform a particular action.
+     - **Timed Waiting:** When a thread is waiting for another thread to perform a particular action, but with a specified timeout.
+     - **Terminated:** When a thread has completed its execution or terminated due to an uncaught exception.
+
+5. **How threads behave in thread pools and thread life-cycle in thread pools:**
+   - In a thread pool, threads are typically in the Runnable state, waiting to execute tasks. When a task is submitted, 
+   the pool assigns it to an available thread for execution. After completing the task, 
+   the thread returns to the pool and becomes available for executing another task.
+   - The life-cycle of threads in a thread pool is similar to the general thread life-cycle, but with additional 
+   considerations for thread pool management,
+   such as creating, terminating, and recycling threads based on the pool's configuration and workload.
+
+6. **Locks that threads acquire while synchronization (yield method):**
+   - When a thread enters a synchronized block or method, it acquires the lock associated with the synchronized object or class. 
+   This lock prevents other threads from entering synchronized blocks or methods on the same object or class until the lock is released.
+   - The `yield()` method is used to temporarily pause the execution of the current thread to give other threads of the same
+   priority a chance to run. It does not release any locks held by the thread.
+
+These concepts are fundamental to understanding how threads work in Java and how they interact within a multi-threaded environment.
+
+@Controller     returns a view using viewResolver
+@RestController returns an object as response instead of view.
+
+
+System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "20")
+
+
+
+1.  convert One Dimentional Array to Two Dimensional Array.
+2.  singleTone & Factory Design Patterns
+3.  Lazy Loading & Eager Loading Patterns
+4.  lambdaExpression , method Expresion , Pararllel Streams , Squential Streams
+5.  Farthest From Zero
+6.  flateMap, Map
+7.  Flatten Nested Array
+8.  Split an array into chunks
+9.  Class Level Asynchronization & Object level Synchronization
+10. Thread Pool Executor.
+11. Demon Thread Implementation
+12. Marker Interface Vs Functional Intetrface.
+13. Create and maintained timesheet using Java
+14. Design the architecture of File Handling.
+15. Atomic Method, Solid principal , Atomic Principal
+16. Action listner , Runnable, Callable interface implementation.
+17. Monolithic architectute & Microservice Architecture.
+18. concurrent modification implementation.
+19. Transient Keyword vs volatile Keyword.
+20. internal working of volatile keyword.
+====================================================================================================================
+1. intenal working of @sprinbootApplicatipon, @Autowire,
+Certainly! Here's a simplified explanation of the internal workings of `@SpringBootApplication` and `@Autowired`:
+
+1. **@SpringBootApplication**:
+   - When you use `@SpringBootApplication` on your main class, it tells Spring Boot to set up your application.
+   - It combines three other annotations (`@Configuration`, `@EnableAutoConfiguration`, and `@ComponentScan`) to configure your application automatically.
+   - `@Configuration` specifies that the class contains Spring Bean configurations.
+   - `@EnableAutoConfiguration` allows Spring Boot to automatically configure your application based on dependencies and classpath.
+   - `@ComponentScan` tells Spring to scan for and register beans (components, services, etc.) in specified packages and their sub-packages.
+
+2. **@Autowired**:
+   - With `@Autowired`, you tell Spring to inject dependencies into your classes automatically.
+   - When Spring sees `@Autowired` on a field, constructor, or method parameter, it looks for a bean of the required type and injects it.
+   - It searches the Spring ApplicationContext for a matching bean and resolves the dependency, wiring everything together.
+
+**In Simple Words**:
+   - `@SpringBootApplication` is like the switch that turns on Spring Boot magic
+   . It automatically configures your app so you can focus on coding.
+   - `@Autowired` is like having a personal assistant. 
+   You tell Spring what you need, and it finds and gives it to you without you having to search for it.
+
+In essence, these annotations save you from manually setting up and wiring your application components, making development easier and more efficient.
+2. @getMapping vs @GET
+@GetMapping: This annotation is specific to Spring MVC and is used to map HTTP GET requests to specific 
+handler methods in your controller. It's like putting a signpost on a road that says "GET requests, go this way!" 
+It's a shortcut for @RequestMapping(method = RequestMethod.GET).
+
+@GET: This is a part of the JAX-RS (Java API for RESTful Web Services) 
+specification and is used in JAX-RS implementations like Jersey or RESTEasy. 
+It serves the same purpose as @GetMapping but in the context of JAX-RS.
+ It's like putting a similar signpost but in a different framework.
+
+Both annotations achieve the same goal of mapping HTTP GET requests to specific methods in your code, 
+but they belong to different frameworks and are used in different contexts within Java web development.
+
+3. Spring CLI, legacy spring
+Spring CLI (Command Line Interface): This is a command-line tool provided by the Spring framework that allows you to quickly bootstrap and run Spring applications
+ without the need for a lot of manual setup or configuration. It's like having a set of command-line tools that streamline the process of creating, building, and running Spring-based applications.
+
+Legacy Spring: This refers to older versions or approaches of the Spring framework that may have been used in the past but are 
+now considered outdated or not the preferred way of doing things. It could refer to older versions of the Spring framework itself or to 
+older design patterns and practices associated with Spring development. Think of it as the earlier versions or practices of Spring that have been 
+superseded by newer, more modern approaches.
+
+4. load vs get       lazy vs Eager
+5. crudRepository
+6. Propogation interface
+7. String immuatble Object
+8. jpa repository
+
+In simple terms:
+
+- **Load vs Get**: Both "load" and "get" are methods used to retrieve data from a database in Hibernate.
+  - **Load**: This method returns a proxy (a placeholder object) for the requested entity, 
+  and the actual database query is deferred until you access properties of the entity. 
+  If the entity does not exist in the database, an exception is thrown when you access its properties.
+  - **Get**: This method immediately queries the database 
+  and returns the requested entity. If the entity does not exist in the database, it returns null.
+
+- **Lazy vs Eager**: These terms describe the fetching strategy for related entities in JPA/Hibernate.
+  - **Lazy**: With lazy fetching, related entities are not loaded from the database 
+  until they are explicitly accessed. This can improve performance by only loading data when it's needed.
+  - **Eager**: With eager fetching, related entities are loaded from the database immediately, 
+  along with the main entity. This can lead to performance issues if the related entities are large or if they're not always needed.
+
+- **CrudRepository**: This is an interface provided by Spring Data JPA that provides 
+CRUD (Create, Read, Update, Delete) operations for entities. It extends the Repository interface and provides 
+methods like save, findById, findAll, delete, etc., allowing you to perform basic database operations on entities without writing boilerplate code.
+
+- **Propagation Interface**: In Spring's transaction management, the propagation behavior specifies what should happen when a method is executed within the scope of a transaction.
+  - Propagation interfaces define different behaviors for how transactions should be propagated when a method is called within the context of an existing transaction.
+  - Examples include "REQUIRED" (use existing transaction if available, create a new one if not),
+  "REQUIRES_NEW" (always create a new transaction), "NESTED" (create a nested transaction if a current transaction exists, otherwise behave like REQUIRED), etc.
+
+- **String Immutable Object**: In Java, a String is immutable, which means its value cannot be changed after it is created. When you modify a String, you're actually creating a new String object rather than modifying the original one. This immutability ensures that Strings are thread-safe and can be safely shared across multiple threads without the risk of concurrent modification.
+
+- **JPA Repository**: In simple terms, a JPA Repository is an interface provided by Spring Data JPA that allows you to interact with a database using Java Persistence API (JPA) entities. It provides methods for performing CRUD operations on entities, as well as querying data from the database. JPA Repositories eliminate the need for writing boilerplate code for database interactions and provide a convenient and type-safe way to work with database entities in Spring applications.
+
+9. **Component Scan vs Service Annotation**:
+   - **Component Scan**: Component scanning is a feature of Spring Framework that automatically scans the specified package and its sub-packages for classes 
+   annotated with stereotype annotations such as @Component, @Service, @Repository, etc. It discovers and registers these classes as Spring beans, allowing them to be managed by the Spring container.
+   - **Service Annotation**: @Service is a specialization of the @Component annotation used to indicate that a class is a service component in the business layer of an application.
+   It serves as a marker for auto-detection during component scanning and helps in organizing the codebase by clearly identifying service classes.
+
+10. **Bean Internal Working**: In Spring, a bean is an object that is managed by the Spring IoC container. 
+When you define a bean in the Spring configuration file or annotate a class with @Component, Spring creates an instance of that class and manages its lifecycle. 
+Internally, Spring uses reflection and dependency injection to instantiate beans and wire them together based on their dependencies.
+
+11. **DI (Dependency Injection), IOC (Inversion of Control), Type**:
+   - **Dependency Injection (DI)**: DI is a design pattern where the dependencies of a class are provided from outside rather than created within the class itself. In Spring, DI is achieved using dependency injection containers (like ApplicationContext or BeanFactory), which inject dependencies into the dependent objects.
+   - **Inversion of Control (IOC)**: IOC is a principle where the control of object creation and lifecycle management is inverted from the application code to a container or framework. In Spring, IOC is implemented through dependency injection, where the Spring container is responsible for managing object creation, configuration, and assembly.
+   - **Type**: In the context of Spring, "type" typically refers to the type of bean or component being defined. For example, @Component, @Service, @Repository, and @Controller are different types of Spring components used to annotate classes based on their roles and responsibilities in the application.
+
+12. **Bean Scope**: Bean scope defines the lifecycle and visibility of a bean instance managed by the Spring container. Common bean scopes in Spring include:
+    - **Singleton**: Only one instance of the bean is created for each Spring IoC container.
+    - **Prototype**: A new instance of the bean is created each time it is requested.
+    - **Request**: A new instance of the bean is created for each HTTP request (only valid in a web-aware Spring application context).
+    - **Session**: A new instance of the bean is created for each HTTP session (only valid in a web-aware Spring application context).
+    - **Application**: A single instance of the bean is created for the entire web application (only valid in a web-aware Spring application context).
+
+13. **Hibernate Component**: In Hibernate, a component is a user-defined class mapped to a table in the database that doesn't have a unique identifier of its own. 
+Components are embedded within other entities and are used to represent value objects or composite keys. They are annotated with @Embeddable and can be reused across multiple entities.
+
+14. **Cache Level**: In the context of caching, "cache level" refers to the level at which caching is implemented and managed. Common cache levels include:
+    - **First-Level Cache**: Also known as session cache, it is associated with a Hibernate Session and caches objects within the session context. It is enabled by default and operates at the session level.
+    - **Second-Level Cache**: A shared cache that stores objects across multiple sessions or transactions. It operates at the SessionFactory level and is managed externally to the session context. Providers include Ehcache, Hazelcast, and Infinispan.
+    - **Query Cache**: Caches the results of queries to improve performance by avoiding repeated executions of the same query. It is part of the second-level cache and caches query result sets based on the query string and parameters.
+
+15. **Actuators**: 
+In Spring Boot, actuators are a set of built-in features that provide production-ready monitoring and management endpoints for your application. 
+Actuators expose useful information about your application's health, metrics, environment, and more, which can be accessed via HTTP endpoints or JMX. Examples of actuators include /health, /info, /metrics, /env, /beans, /mappings, etc.
+
+16. **Primary Annotation**: 
+In Spring, the @Primary annotation is used to indicate a primary bean when multiple beans of the same type are defined. 
+When autowiring beans by type, the bean marked with @Primary will be preferred over others if there are multiple candidates.
+It helps resolve ambiguity when there are multiple beans of the same type and ensures that the correct bean is injected.
+
+
+8. **AOP (Aspect-Oriented Programming)**:
+   - AOP is a programming paradigm that aims to increase modularity by allowing cross-cutting concerns, such as logging, security, and transaction management, to be modularized and reused across different parts of an application.
+   - In simple terms, AOP allows you to separate concerns that cut across multiple modules, making it easier to manage and maintain your codebase.
+   - AOP achieves this by defining aspects, which are modular units of cross-cutting functionality, and applying them to target objects or methods using pointcuts.
+
+19. **Session vs SessionFactory**:
+   - **Session**: In Hibernate, a session represents a single unit of work with the database. It is used to perform database operations 
+   such as saving, updating, and deleting objects. A session is created using SessionFactory and should be closed after use to release database resources.
+   - **SessionFactory**: SessionFactory is a thread-safe object used to create sessions in Hibernate. It is typically created once during 
+   application startup and shared across the application. SessionFactory loads Hibernate configuration and mapping files, manages connection pooling, and is responsible for creating session instances.
+
+20. **Profiling Usage**:
+   - Profiling is the process of monitoring and analyzing the performance of an application to identify bottlenecks, memory leaks, and other performance issues.
+   - Profiling tools such as Java VisualVM, YourKit, and JProfiler provide insights into CPU usage, memory consumption, thread activity, and other metrics to help optimize application performance.
+   - Usage of profiling tools involves capturing runtime data, analyzing performance metrics, identifying performance hotspots, and making optimizations to improve overall application performance.
+
+21. **Dispatcher vs Filter vs Common Handler**:
+   - **Dispatcher**: In the context of Spring MVC, the DispatcherServlet acts as the front controller that receives all incoming requests and delegates them to the appropriate handlers 
+   (controllers) based on request mappings. It is responsible for managing the entire request-processing lifecycle in a Spring MVC application.
+   - **Filter**: Filters are Java components that intercept HTTP requests and responses before they reach the servlet or web container. 
+   They are used for tasks such as authentication, logging, encoding, and filtering requests based on certain criteria. Filters are configured in the deployment 
+   descriptor (web.xml) and are executed in the order in which they are defined.
+   - **Common Handler**: It seems like you're referring to a generic handler that can handle various types of requests. In Spring MVC,
+   controllers are the common handlers responsible for processing requests and generating responses. They are typically annotated with 
+   @Controller and contain handler methods annotated with @RequestMapping to map requests to specific actions.
+
+22. **Communication Protocol in Spring Boot**:
+   - Spring Boot supports various communication protocols for building web applications and microservices, including HTTP, WebSocket, and 
+   messaging protocols like STOMP (Simple Text Oriented Messaging Protocol) and AMQP (Advanced Message Queuing Protocol).
+   - HTTP is the most common protocol used for client-server communication in Spring Boot applications. It allows clients to send requests
+   to the server and receive responses over the Hypertext Transfer Protocol.
+   - WebSocket is a communication protocol that provides full-duplex communication channels over a single TCP connection.
+   It is commonly used for real-time web applications that require bidirectional communication between clients and servers.
+   - Messaging protocols like STOMP and AMQP are used for asynchronous messaging between components in distributed systems, 
+   enabling reliable and scalable communication between producers and consumers.
+
+23. **@Transactional Annotation**:
+   - @Transactional is a Spring annotation used to define transactional behavior for methods or classes. It marks a method, class, or interface as transactional, 
+   meaning that a transaction will be created around the annotated method, and any database operations performed within the method will be included in the transaction.
+   - When applied at the method level, @Transactional ensures that the method executes within a transactional context, with automatic commit or rollback based on the success or failure of the method.
+   - @Transactional can also be used at the class level to apply transactional behavior to all public methods of the class.
+
+24. **saveAll(), flushAndSaveAll(), persist(), flush()**:
+   - **saveAll()**: In Spring Data JPA, saveAll() is a method provided by the CrudRepository interface for saving multiple entities in a single batch operation. 
+   It accepts an Iterable of entities and persists them to the database.
+   - **flushAndSaveAll()**: This method doesn't exist in standard JPA or Spring Data JPA repositories. However, it might be a custom method defined in 
+   your application to first flush any pending changes to the database and then save multiple entities in a batch operation.
+   - **persist()**: persist() is a method defined in the JPA EntityManager interface used to make an instance of a persistent entity managed and persistent.
+   It is typically used to save a single entity to the database.
+   - **flush()**: flush() is a method provided by the JPA EntityManager interface used to synchronize the persistence context with the underlying database.
+   It forces any pending changes in the persistence context to be immediately
+
+ written to the database.
+
+25. **Pagination (Servlet and DB) and Pagination with Sorting in Spring Boot**:
+   - **Servlet Pagination**: In servlet-based applications, pagination refers to the process of dividing a large set of data into
+   smaller pages to improve performance and user experience. It involves retrieving a subset of data from a database based on page size and current page number.
+   - **DB Pagination**: Database pagination involves using SQL queries with LIMIT and OFFSET clauses to fetch a specific subset of data from the database.
+   It allows applications to efficiently retrieve and display data in chunks, reducing memory consumption and improving performance.
+   - **Pagination with Sorting in Spring Boot**: Spring Data JPA provides built-in support for pagination and sorting through interfaces like PagingAndSortingRepository and Pageable. 
+   By using methods like findAll(Pageable pageable), you can retrieve paginated results from the database while also specifying sorting criteria. 
+   This allows you to fetch data in manageable chunks and order it based on specific fields.
+==========================================================================================================================
+
+1. second max
+gruop by that column name and then 
+SELECT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+2. duplicate data from DB
+SELECT name, COUNT(*)
+FROM employees
+GROUP BY name
+HAVING COUNT(*) > 1;
+
+3. cursor vs package
+In the context of databases, "cursor" and "package" refer to different concepts:
+
+1. **Cursor**:
+   - A cursor is a database object used to retrieve and manipulate data from a result set one row at a time.
+   - It allows you to iterate over the rows returned by a SQL query and process each row individually.
+   - Cursors are commonly used in procedural programming languages like PL/SQL to perform operations on query results row by row.
+
+2. **Package**:
+   - A package in a database is a container for related objects, including procedures, functions, variables, and other packages.
+   - It provides a way to organize and modularize database code by grouping related elements together.
+   - Packages can be used to encapsulate logic, improve code reusability, and manage permissions and dependencies.
+   - In PL/SQL (Procedural Language/Structured Query Language), packages are a fundamental building block for organizing and maintaining code.
+
+
+
+4. **Stored Procedure (SP) vs Function**:
+   - **Stored Procedure (SP)**: A stored procedure is a set of SQL statements that are stored in the database and can be executed later.                                                                                                                                                                                                                              
+		It can accept input parameters, perform operations such as querying or modifying data, and return results. Stored procedures are typically used for complex data processing tasks,                                                                                                                                                        
+		business logic implementation, or data manipulation operations.                                                                                                                                                                                                                                                                                                                               
+   - **Function**: A function is a block of reusable code that performs a specific task. In the context of databases, functions are similar to stored procedures but have some differences.                                                                                                                                                         
+		Functions can return a single value or a table of values and can be used in SQL queries as part of expressions. They are often used for calculations, data transformations, or generating values.                                                                                                                                     
+																																																																																																								   
+6. **Index**:                                                                                                                                                                                                                                                                                                                                                                                                                  
+   - An index is a database object that improves the speed of data retrieval operations on a table.                                                                                                                                                                                                                                                                                        
+	It is created on one or more columns of a table and stores a sorted reference to the rows in the table,                                                                                                                                                                                                                                                                             
+	allowing for faster data access when querying based on the indexed columns.                                                                                                                                                                                                                                                                                                               
+	Indexes can significantly improve the performance of SELECT queries but may slow down data modification operations (INSERT, UPDATE, DELETE) because the indexes need to be updated.                                                                                                                                         
+																																																																																																								   
+7. **View**:                                                                                                                                                                                                                                                                                                                                                                                                                   
+   - A view is a virtual table that is defined by a SQL query. It does not store data itself but rather represents the result set of a query executed against one or more tables.                                                                                                                                                                             
+   Views can simplify complex queries, provide a layer of abstraction over the underlying data model, and restrict access to certain columns or rows.                                                                                                                                                                                                             
+   They are commonly used to present data in a particular format or to encapsulate frequently used queries.                                                                                                                                                                                                                                                                        
+																																																																																																								   
+8. **Primary Key, Foreign Key, Unique Constraint, Distinct Constraint**:                                                                                                                                                                                                                                                                                                                            
+   - **Primary Key**: A primary key is a column or a set of columns that uniquely identifies each row in a table. It ensures that there are no duplicate rows and provides a way to establish relationships between tables.                                                                                                            
+   - **Foreign Key**: A foreign key is a column or a set of columns in a table that references the primary key of another table. It enforces referential integrity by ensuring that values in the foreign key columns match values in the primary key columns of the referenced table.                         
+   - **Unique Constraint**: A unique constraint ensures that the values in one or more columns of a table are unique across all rows. Unlike a primary key, a unique constraint allows NULL values, and there can be multiple unique constraints per table.
+   - **Distinct Constraint**: There is no distinct constraint in SQL. The DISTINCT keyword is used in SELECT queries to eliminate duplicate rows from the result set.
+
+9. **Autoincrement ID**:
+   - An autoincrement ID, also known as an identity column or sequence, is a column in a table whose values are automatically generated by the database system. It is commonly used as a primary key with a unique, incrementing value for each new row inserted into the table. In databases like MySQL, PostgreSQL, and SQL Server, you can define a column with an autoincrement property (e.g., AUTO_INCREMENT in MySQL) to achieve this behavior.
+
+These concepts are fundamental to understanding and working with relational databases, and they play crucial roles in database design, data manipulation, and query optimization.
+
+10. **Types of Joins**:
+   - **Inner Join**: Returns only the rows that have matching values in both tables based on the join condition.
+   - **Left Outer Join (or Left Join)**: Returns all the rows from the left table and the matched rows from the right table. If there are no matching rows in the right table, it returns NULL values for the columns from the right table.
+   - **Right Outer Join (or Right Join)**: Returns all the rows from the right table and the matched rows from the left table. If there are no matching rows in the left table, it returns NULL values for the columns from the left table.
+   - **Full Outer Join (or Full Join)**: Returns all the rows when there is a match in either the left or right table. If there is no match, NULL values are returned for the columns from the other table.
+   - **Cross Join**: Returns the Cartesian product of the two tables, meaning it combines each row from the first table with every row from the second table, resulting in a potentially large result set.
+
+11. **Partition Over and Ranking in Query**:
+   - **Partition By**: The PARTITION BY clause in SQL is used to divide the result set of a query into partitions to which the window function is applied separately. It allows you to perform calculations, such as ranking or aggregations, within each partition independently.
+   - **Ranking Functions**: Ranking functions in SQL, such as ROW_NUMBER(), RANK(), DENSE_RANK(), and NTILE(), assign a rank or row number to each row based on specified criteria within each partition. These functions are often used to identify the top or bottom N rows, calculate percentiles, or partition data into buckets based on rankings.
+
+12. **Fetch Row and Offset**:
+   - **Fetch Row**: The FETCH clause in SQL is used to retrieve a specified number of rows from the result set returned by a query. It allows you to limit the number of rows returned, which can be useful for pagination or displaying a subset of results.
+   - **Offset**: The OFFSET clause is often used in conjunction with the FETCH clause to skip a specified number of rows before returning the subsequent rows. It is commonly used for implementing pagination, where you want to retrieve rows starting from a specific position in the result set.
+
+In simpler terms, joins combine data from multiple tables based on common columns, partitioning allows you to group data for analysis, ranking functions assign ranks or row numbers to rows within each group, and fetch row with offset helps in fetching a specific subset of rows, useful for pagination.
